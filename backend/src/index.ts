@@ -1,28 +1,24 @@
-import express, { response } from 'express'
 import 'reflect-metadata'
+import express from 'express'
+import { BookResolver } from './resolvers/book'
+import { ApolloServer } from 'apollo-server-express'
+import { buildSchema } from 'type-graphql'
 import { createConnection } from 'typeorm'
-import { Book } from './entity/Book'
 
+const PORT = 42069
 const main = async () => {
     const db = await createConnection()
     const app = express()
-
-    const bookRepository = db.getRepository(Book)
-    await bookRepository.save({
-        author: 'Miguel',
-        description: 'a good book huh?',
-        title: 'TODO',
-        subtitle: 'create a better name',
+    const apollo = new ApolloServer({
+        schema: await buildSchema({
+            resolvers: [BookResolver],
+            validate: false,
+        }),
     })
-    const books = await bookRepository.find()
-    console.log(books)
-
-    app.get('/', (_, res) => {
-        res.send(books)
-    })
-
-    app.listen(4000, () => {
-        console.log('>> Server started in http://localhost:4000')
+    apollo.applyMiddleware({ app })
+    app.listen(PORT, () => {
+        console.log(`Express file serving running in http://localhost:${PORT}`)
+        console.log(`GraphQL playground in http://localhost:${PORT}/graphql`)
     })
 }
 
