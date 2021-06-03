@@ -1,4 +1,12 @@
-import { Field, ID, InputType, ObjectType } from 'type-graphql'
+import { GraphQLUpload } from 'apollo-server-express'
+import { FileUpload } from 'graphql-upload'
+import {
+    Field,
+    GraphQLISODateTime,
+    ID,
+    InputType,
+    ObjectType,
+} from 'type-graphql'
 import {
     Entity,
     PrimaryGeneratedColumn,
@@ -19,8 +27,8 @@ interface IBook {
 @ObjectType()
 @Entity()
 export class Book extends BaseEntity implements IBook {
-    @Field((type) => ID)
-    @PrimaryGeneratedColumn('uuid')
+    @Field((_type) => ID)
+    @PrimaryGeneratedColumn()
     readonly id: string
 
     @Field()
@@ -43,11 +51,11 @@ export class Book extends BaseEntity implements IBook {
     @Column({ nullable: true })
     image?: string
 
-    @Field()
+    @Field((type) => GraphQLISODateTime)
     @CreateDateColumn()
     createdAt: Date
 
-    @Field()
+    @Field((type) => GraphQLISODateTime)
     @UpdateDateColumn()
     updatedAt: Date
 }
@@ -66,6 +74,6 @@ export class BookInput implements IBook {
     @Field()
     author: string
 
-    @Field({ nullable: true })
-    image: string
+    @Field((_type) => GraphQLUpload, { nullable: true })
+    image: FileUpload
 }
