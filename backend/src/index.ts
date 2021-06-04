@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import 'reflect-metadata'
 import * as dotenv from 'dotenv'
 import * as path from 'path'
@@ -5,32 +6,28 @@ import express from 'express'
 import { ApolloServer } from 'apollo-server-express'
 import { buildSchema } from 'type-graphql'
 import { createConnection } from 'typeorm'
-import { BookResolver } from './resolvers/book'
+import BookResolver from './resolvers/BookResolver'
 
 dotenv.config({ path: path.join(__dirname, '..', '..', '.env') })
-const API_PORT = process.env.API_PORT
+const { API_PORT } = process.env
 
 const main = async () => {
-    const db = await createConnection()
-    const app = express()
+  const db = await createConnection()
+  const app = express()
 
-    const apollo = new ApolloServer({
-        schema: await buildSchema({
-            resolvers: [BookResolver],
-            validate: false,
-        }),
-    })
+  const apollo = new ApolloServer({
+    schema: await buildSchema({
+      resolvers: [BookResolver],
+      validate: false,
+    }),
+  })
 
-    app.use('/static', express.static(path.resolve(__dirname, '..', 'uploads')))
-    apollo.applyMiddleware({ app })
-    app.listen(process.env.API_PORT, () => {
-        console.log(
-            `Express file serving running in http://localhost:${API_PORT}`
-        )
-        console.log(
-            `GraphQL playground in http://localhost:${API_PORT}/graphql`
-        )
-    })
+  app.use('/static', express.static(path.resolve(__dirname, '..', 'uploads')))
+  apollo.applyMiddleware({ app })
+  app.listen(process.env.API_PORT, () => {
+    console.log(`Express file serving running in http://localhost:${API_PORT}`)
+    console.log(`GraphQL playground in http://localhost:${API_PORT}/graphql`)
+  })
 }
 
 main().catch(console.error)
