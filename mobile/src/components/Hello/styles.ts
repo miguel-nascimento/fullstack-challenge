@@ -1,17 +1,17 @@
 import styled from 'styled-components/native';
 
 const Container = styled.View`
-  margin: 0 20px;
+  width: 90%;
   margin-bottom: 36px;
 `;
 
-const Text = styled.Text`
+const Title = styled.Text`
   font-size: 24px;
-  color: #54565a;
+  color: ${({ theme }) => theme.color.title}; ;
 `;
 
 const Name = styled.Text`
-  color: #fe6978;
+  color: ${({ theme }) => theme.color.primary};
   font-weight: 600;
 `;
-export { Container, Text, Name };
+export { Container, Title, Name };

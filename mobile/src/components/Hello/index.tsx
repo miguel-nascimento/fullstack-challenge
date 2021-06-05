@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Container, Text, Name } from './styles';
+import { Container, Title, Name } from './styles';
 
 export interface IHelloProps {
   name: string;
@@ -8,11 +8,13 @@ export interface IHelloProps {
 
 const Hello: React.FC<IHelloProps> = ({ name }) => (
   <Container>
-    <Text>
+    <Title>
       Hi,
+      {' '}
       <Name>{name}</Name>
+      {' '}
       👋
-    </Text>
+    </Title>
   </Container>
 );
 

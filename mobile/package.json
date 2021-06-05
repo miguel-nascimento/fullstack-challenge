@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.3.19",
+    "@expo/vector-icons": "^12.0.5",
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/bottom-tabs": "^5.11.11",
     "@react-navigation/core": "^5.15.3",

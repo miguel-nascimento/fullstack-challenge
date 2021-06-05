@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 
 const Container = styled.View`
-  padding: 20px;
+  padding: 30px 20px;
 `;
 
 const Cover = styled.Image`
