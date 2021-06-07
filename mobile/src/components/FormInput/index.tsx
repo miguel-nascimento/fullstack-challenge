@@ -22,13 +22,13 @@ const FormInput: React.FC<FormInputProps> = ({
       <Label>{name}</Label>
       <InputContainer
         style={{
-          shadowColor: '#000',
+          shadowColor: 'rgba(229, 229, 229, 0.5)',
           shadowOffset: {
             width: 0,
-            height: 1,
+            height: 2,
           },
-          shadowOpacity: 0.22,
-          shadowRadius: 2.22,
+          shadowOpacity: 0.5,
+          shadowRadius: 4,
 
           elevation: 3,
         }}
