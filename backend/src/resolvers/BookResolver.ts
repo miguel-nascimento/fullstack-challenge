@@ -9,7 +9,8 @@ import BookInput from './input/BookInput'
 class BookResolver {
   @Query(() => [Book])
   async getBooks(
-    @Arg('limit') limit: number,
+    // eslint-disable-next-line @typescript-eslint/no-inferrable-types
+    @Arg('limit', { nullable: true }) limit: number = 9,
     @Arg('cursor', () => String, { nullable: true }) cursor: string | null
   ): Promise<Book[] | undefined> {
     const pageLimit = Math.min(50, limit)
