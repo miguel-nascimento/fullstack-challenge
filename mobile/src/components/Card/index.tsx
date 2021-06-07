@@ -2,9 +2,10 @@ import React from 'react';
 import { ImageContainer, Author, Container, Cover, Title } from './styles';
 
 export interface BookProps {
-  image?: string;
+  id?: string;
   title: string;
   author: string;
+  image?: string;
 }
 
 const Card: React.FC<BookProps> = ({ image, title, author }) => (

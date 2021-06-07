@@ -62,6 +62,7 @@ const Add: React.FC = () => {
   const onSubmit = (data: any) => {
     console.log(data, image);
     reset();
+    setImage(null);
   };
   return (
     <Wrapper>
