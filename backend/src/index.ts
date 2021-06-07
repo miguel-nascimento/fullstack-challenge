@@ -19,6 +19,8 @@ const main = async () => {
       resolvers: [BookResolver],
       validate: false,
     }),
+    introspection: true,
+    playground: true,
   })
 
   app.use(cors())
