@@ -71,7 +71,7 @@ const Add: React.FC = () => {
         </Header>
         <ScrollView keyboardShouldPersistTaps="handled">
           <Body>
-            <Label>Select a image for your new book</Label>
+            <Label>Image</Label>
             <CoverPicker>
               <PickerContainer>
                 <Picker onPress={pickImage}>
