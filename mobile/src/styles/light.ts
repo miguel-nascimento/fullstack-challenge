@@ -9,6 +9,7 @@ const light: DefaultTheme = {
     text: '#5A5959',
     input: '#FDFCFC',
     inputText: '#54565A',
+    formText: '#000',
   },
 };
 

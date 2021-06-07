@@ -1,24 +1,19 @@
 import React from 'react';
-import { TouchableOpacity } from 'react-native';
-import { Author, Container, Cover, Title } from './styles';
+import { ImageContainer, Author, Container, Cover, Title } from './styles';
 
-export interface IBookProps {
+export interface BookProps {
   image?: string;
   title: string;
   author: string;
 }
 
-const Card: React.FC<IBookProps> = ({ image, title, author }) => (
+const Card: React.FC<BookProps> = ({ image, title, author }) => (
   <Container>
-    <TouchableOpacity>
+    <ImageContainer style={{ elevation: 10 }}>
       <Cover source={{ uri: image }} />
-    </TouchableOpacity>
+    </ImageContainer>
     <Title>{title}</Title>
-    <Author>
-      by
-      {' '}
-      {author}
-    </Author>
+    <Author>by {author}</Author>
   </Container>
 );
 

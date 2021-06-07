@@ -10,6 +10,7 @@ declare module 'styled-components' {
       title: string;
       input: string;
       inputText: string;
+      formText: string;
     };
   }
 }

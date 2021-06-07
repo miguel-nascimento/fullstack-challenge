@@ -1,17 +1,17 @@
 import styled from 'styled-components/native';
 
-const Container = styled.View`
-  padding: 30px 20px;
+export const Container = styled.View`
+  margin: 30px 25px 30px 20px;
 `;
 
-const Cover = styled.Image`
+export const Cover = styled.Image`
   border-radius: 5px;
   width: 100px;
   height: 150px;
   /* err, dropshadow? */
 `;
 
-const Title = styled.Text`
+export const Title = styled.Text`
   margin-top: 10px;
   font-weight: 700;
   color: #313131;
@@ -19,7 +19,7 @@ const Title = styled.Text`
   line-height: 14px;
 `;
 
-const Author = styled.Text`
+export const Author = styled.Text`
   margin-top: 5px;
   font-weight: 900;
   font-size: 10px;
@@ -27,4 +27,4 @@ const Author = styled.Text`
   line-height: 12px;
 `;
 
-export { Container, Cover, Title, Author };
+export const ImageContainer = styled.TouchableOpacity``;

@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Add from './pages/Add';
 import Home from './pages/Home';
 import MenuItem, { IMenuItemProps } from './components/MenuItem';
+import NotFound from './pages/NotFound';
 
 const Tab = createBottomTabNavigator();
 
@@ -48,7 +49,7 @@ const Routes: React.FC = () => (
     />
     <Tab.Screen
       name="Profile"
-      component={Home}
+      component={NotFound}
       options={{
         tabBarIcon: ({ focused }) => MenuItem({ ...ProfileProps, focused }),
       }}
