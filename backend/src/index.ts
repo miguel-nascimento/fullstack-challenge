@@ -8,7 +8,7 @@ import { createConnection } from 'typeorm'
 import cors from 'cors'
 import BookResolver from './resolvers/BookResolver'
 
-const API_PORT = process.env.PORT || 5000
+const API_PORT: any = process.env.PORT || 5000
 
 const main = async () => {
   const db = await createConnection()
@@ -24,9 +24,8 @@ const main = async () => {
   app.use(cors())
   app.use('/static', express.static(path.resolve(__dirname, '..', 'uploads')))
   apollo.applyMiddleware({ app })
-  app.listen(process.env.API_PORT, () => {
-    console.log(`Express file serving running in http://localhost:${API_PORT}`)
-    console.log(`GraphQL playground in http://localhost:${API_PORT}/graphql`)
+  app.listen(API_PORT, '0.0.0.0', () => {
+    console.log('Server is running')
   })
 }
 
