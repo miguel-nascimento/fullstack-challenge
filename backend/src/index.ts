@@ -27,7 +27,9 @@ const main = async () => {
   app.use('/static', express.static(path.resolve(__dirname, '..', 'uploads')))
   apollo.applyMiddleware({ app })
   app.listen(API_PORT, '0.0.0.0', () => {
-    console.log('Server is running')
+    console.log(`-=-     Desafio Foton Fullstack - Ouse ir além      -=-`)
+    console.log(`Static file server is running in http://localhost:${API_PORT}`)
+    console.log(`GraphQL is running in http://localhost:${API_PORT}/graphql`)
   })
 }
 

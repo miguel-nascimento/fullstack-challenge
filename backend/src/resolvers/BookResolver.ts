@@ -9,7 +9,6 @@ import BookInput from './input/BookInput'
 class BookResolver {
   @Query(() => [Book])
   async getBooks(
-    // eslint-disable-next-line @typescript-eslint/no-inferrable-types
     @Arg('limit', { nullable: true }) limit: number = 9,
     @Arg('cursor', () => String, { nullable: true }) cursor: string | null
   ): Promise<Book[] | undefined> {
@@ -19,7 +18,7 @@ class BookResolver {
       .take(pageLimit)
 
     if (cursor) {
-      queryBuilder.where(`"createdAt" > datetime('${cursor}')`)
+      queryBuilder.where(`"createdAt" < datetime('${cursor}')`)
     }
     return queryBuilder.getMany()
   }
