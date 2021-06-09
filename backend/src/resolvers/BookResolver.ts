@@ -36,6 +36,7 @@ class BookResolver {
   async createBook(
     @Arg('input') input: BookInput
   ): Promise<boolean | undefined> {
+    console.log(input.image)
     if (input.image) {
       const hashedName = `${uuidv4()}-${input.image.file.filename}`
       return new Promise((resolve, reject) =>
