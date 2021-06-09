@@ -1,0 +1,11 @@
+query GetBooks($cursor: String, $limit: Float) {
+  getBooks(cursor: $cursor, limit: $limit) {
+    id
+    title
+    subtitle
+    description
+    author
+    image
+    createdAt
+  }
+}

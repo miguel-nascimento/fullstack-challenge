@@ -20,9 +20,13 @@ import FormInput from '../../components/FormInput';
 import { ScrollView } from 'react-native';
 import { Controller, useForm } from 'react-hook-form';
 import { Feather } from '@expo/vector-icons';
+import { useCreateBookMutation } from '../../generated/graphql';
+import { useNavigation } from '@react-navigation/core';
 
 const Add: React.FC = () => {
   const [image, setImage] = useState<string | null>(null);
+  const [create] = useCreateBookMutation();
+  const navigation = useNavigation();
   const {
     control,
     reset,
@@ -60,9 +64,11 @@ const Add: React.FC = () => {
   };
 
   const onSubmit = (data: any) => {
+    create({ variables: data });
     console.log(data, image);
     reset();
     setImage(null);
+    navigation.navigate('Home', { screen: 'Index' });
   };
   return (
     <Wrapper>

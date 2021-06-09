@@ -1,13 +1,13 @@
+import { useTheme } from '@react-navigation/native';
 import React from 'react';
-import { ActivityIndicator, View } from 'react-native';
-
-import light from '../../styles/light';
+import { ActivityIndicator } from 'react-native';
 import { Container } from './styles';
 
 const Loading: React.FC = () => {
+  const theme = useTheme();
   return (
     <Container>
-      <ActivityIndicator color={light.color.primary} size="large" />
+      <ActivityIndicator color={theme.colors.primary} size="large" />
     </Container>
   );
 };

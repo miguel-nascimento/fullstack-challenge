@@ -1,87 +1,58 @@
-import { gql, useQuery } from '@apollo/client';
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { FlatList, KeyboardAvoidingView, Platform } from 'react-native';
 import Card, { BookProps } from '../../components/Card';
 import Hello from '../../components/Hello';
-import AppLoading from 'expo-app-loading';
 
 import Search from '../../components/Search';
 
-import { Container } from './styles';
-
-const BOOKS_QUERY = gql`
-  query {
-    getBooks {
-      id
-      title
-      author
-      image
-    }
-  }
-`;
-
-const dataList = [
-  {
-    key: String(Math.random()),
-    author: 'Gary Keller',
-    title: 'The One Thing',
-    image:
-      'https://books.google.com.br/books/content?id=94ScMQEACAAJ&printsec=frontcover&img=1&zoom=1&imgtk=AFLRE731QJgYtWNccoYSzzJRFODBQJ1wUeas834HrotPjnuRWs-UNDviqxS8cGkoJuxRccNinIeQknm1ZSN61e-ATmF0FYIWqLT1fsjVLFrAT1LOW4Oww_EPJtl1sN4jwXl-0TKtNBbE',
-  },
-  {
-    key: String(Math.random()),
-    author: 'Nir Eyal',
-    title: 'Hooked',
-    image: 'https://images-na.ssl-images-amazon.com/images/I/81fcWvYdukL.jpg',
-  },
-  {
-    key: String(Math.random()),
-    author: 'Jim Collins',
-    title: 'Good to Great',
-    image: 'https://images-na.ssl-images-amazon.com/images/I/81cOrVseOYL.jpg',
-  },
-  {
-    key: String(Math.random()),
-    author: 'Gary Keller',
-    title: 'The One Thing',
-    image:
-      'https://books.google.com.br/books/content?id=94ScMQEACAAJ&printsec=frontcover&img=1&zoom=1&imgtk=AFLRE731QJgYtWNccoYSzzJRFODBQJ1wUeas834HrotPjnuRWs-UNDviqxS8cGkoJuxRccNinIeQknm1ZSN61e-ATmF0FYIWqLT1fsjVLFrAT1LOW4Oww_EPJtl1sN4jwXl-0TKtNBbE',
-  },
-  {
-    key: String(Math.random()),
-    author: 'Nir Eyal',
-    title: 'Hooked',
-    image: 'https://images-na.ssl-images-amazon.com/images/I/81fcWvYdukL.jpg',
-  },
-  {
-    key: String(Math.random()),
-    author: 'Jim Collins',
-    title: 'Good to Great',
-    image: 'https://images-na.ssl-images-amazon.com/images/I/81cOrVseOYL.jpg',
-  },
-  {
-    key: String(Math.random()),
-    author: 'Gary Keller',
-    title: 'The One Thing',
-    image:
-      'https://books.google.com.br/books/content?id=94ScMQEACAAJ&printsec=frontcover&img=1&zoom=1&imgtk=AFLRE731QJgYtWNccoYSzzJRFODBQJ1wUeas834HrotPjnuRWs-UNDviqxS8cGkoJuxRccNinIeQknm1ZSN61e-ATmF0FYIWqLT1fsjVLFrAT1LOW4Oww_EPJtl1sN4jwXl-0TKtNBbE',
-  },
-  {
-    key: String(Math.random()),
-    author: 'Nir Eyal',
-    title: 'Hooked',
-    image: 'https://images-na.ssl-images-amazon.com/images/I/81fcWvYdukL.jpg',
-  },
-];
+import { Button, ButtonText, Container, LoadMore } from './styles';
+import {
+  useGetBooksLazyQuery,
+  useGetBooksQuery,
+} from '../../generated/graphql';
+import { useNavigation } from '@react-navigation/core';
+import Loading from '../../components/Loading';
 
 const Home: React.FC = () => {
-  const { error, data, loading } = useQuery(BOOKS_QUERY);
+  const navigation = useNavigation();
+  const [books, setBooks] = useState<any>();
+  const [get] = useGetBooksLazyQuery({
+    onCompleted: (data) => {
+      if (data) {
+        setBooks(data.getBooks);
+      }
+    },
+    fetchPolicy: 'network-only',
+  });
 
-  if (loading) {
-    return <AppLoading />;
-  }
+  const [cursor, setCursor] = useState<string>('');
+  const [getBooksUsingCursor, { loading }] = useGetBooksLazyQuery({
+    variables: { cursor: cursor },
+    pollInterval: 1000,
+    onCompleted: (data) => {
+      if (data) {
+        setBooks([...books, ...data.getBooks]);
+        console.log([...books, ...data.getBooks]);
+      }
+    },
+  });
 
-  console.log(error, data);
+  useEffect(() => {
+    get();
+  }, []);
+
+  const toDetailPage = (id: any) => {
+    console.log(id);
+    navigation.navigate('Detail', { id });
+  };
+  const loadMore = () => {
+    const lastItem = books[books.length - 1];
+    if (lastItem) {
+      setCursor(lastItem.createdAt);
+      getBooksUsingCursor();
+    }
+  };
+
   return (
     <Container>
       <KeyboardAvoidingView
@@ -93,16 +64,34 @@ const Home: React.FC = () => {
           placeholder="Search book"
         />
         <Hello name="Mehmed Al Fatih" />
-        {/* <FlatList<BookProps>
-          data={data.getBooks}
-          numColumns={3}
-          keyExtractor={(item) => String(item.id)}
-          onRefresh={() => {}}
-          refreshing={false}
-          renderItem={({ item }) => (
-            <Card image={item.image} author={item.author} title={item.title} />
-          )}
-        /> */}
+        {loading && <Loading />}
+        {books && (
+          <FlatList<BookProps>
+            data={books}
+            contentContainerStyle={{ paddingBottom: 125 }}
+            numColumns={3}
+            keyExtractor={(item) => String(item.id)}
+            onRefresh={get}
+            refreshing={false}
+            ListFooterComponent={() => (
+              <LoadMore>
+                <Button onPress={loadMore}>
+                  <ButtonText>Load more</ButtonText>
+                </Button>
+              </LoadMore>
+            )}
+            renderItem={({ item }) => (
+              <Card
+                onPress={() => {
+                  toDetailPage(item.id);
+                }}
+                image={item.image}
+                author={item.author}
+                title={item.title}
+              />
+            )}
+          />
+        )}
       </KeyboardAvoidingView>
     </Container>
   );

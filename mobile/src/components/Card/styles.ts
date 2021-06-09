@@ -2,13 +2,13 @@ import styled from 'styled-components/native';
 
 export const Container = styled.View`
   margin: 30px 25px 30px 20px;
+  flex-shrink: 1;
 `;
 
 export const Cover = styled.Image`
   border-radius: 5px;
   width: 100px;
   height: 150px;
-  /* err, dropshadow? */
 `;
 
 export const Title = styled.Text`
@@ -17,6 +17,7 @@ export const Title = styled.Text`
   color: #313131;
   font-size: 12px;
   line-height: 14px;
+  flex-shrink: 1;
 `;
 
 export const Author = styled.Text`
@@ -25,6 +26,7 @@ export const Author = styled.Text`
   font-size: 10px;
   color: #313131;
   line-height: 12px;
+  flex-shrink: 1;
 `;
 
 export const ImageContainer = styled.TouchableOpacity``;
