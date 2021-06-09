@@ -38,7 +38,7 @@ class BookResolver {
   ): Promise<boolean | undefined> {
     console.log(input.image)
     if (input.image) {
-      const hashedName = `${uuidv4()}-${input.image.file.filename}`
+      const hashedName = `${uuidv4()}-${input.image.file.name}`
       return new Promise((resolve, reject) =>
         input.image.file
           .createReadStream()
