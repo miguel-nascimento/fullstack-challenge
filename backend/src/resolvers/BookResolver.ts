@@ -10,7 +10,8 @@ class BookResolver {
   @Query(() => [Book])
   async getBooks(
     @Arg('limit', { nullable: true }) limit: number = 9,
-    @Arg('cursor', () => String, { nullable: true }) cursor: string | null
+    @Arg('cursor', () => String, { nullable: true }) cursor: string | null,
+    @Arg('title', { nullable: true }) title: string | null
   ): Promise<Book[] | undefined> {
     const pageLimit = Math.min(50, limit)
     const queryBuilder = Book.createQueryBuilder()
@@ -19,6 +20,9 @@ class BookResolver {
 
     if (cursor) {
       queryBuilder.where(`"createdAt" < datetime('${cursor}')`)
+    }
+    if (title) {
+      queryBuilder.where(`"title" like '%${title}'`)
     }
     return queryBuilder.getMany()
   }
