@@ -1,5 +1,5 @@
 import { Arg, Mutation, Query, Resolver } from 'type-graphql'
-import { createWriteStream } from 'fs'
+import { createReadStream, createWriteStream } from 'fs'
 import { v4 as uuidv4 } from 'uuid'
 import * as path from 'path'
 import Book from '../models/entity/Book'
@@ -46,7 +46,8 @@ class BookResolver {
   }
 
   processUpload = async (upload) => {
-    const { stream, filename } = await upload
+    const { createReadStream, filename } = await upload
+    const stream = createReadStream()
     const hashedName = `${uuidv4()}-${filename}`
     const { path } = await this.storeUpload({ stream, filename: hashedName })
     return path
