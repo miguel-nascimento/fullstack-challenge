@@ -57,6 +57,7 @@ export type Query = {
 
 
 export type QueryGetBooksArgs = {
+  title?: Maybe<Scalars['String']>;
   cursor?: Maybe<Scalars['String']>;
   limit?: Maybe<Scalars['Float']>;
 };
@@ -97,6 +98,7 @@ export type GetBookQuery = (
 export type GetBooksQueryVariables = Exact<{
   cursor?: Maybe<Scalars['String']>;
   limit?: Maybe<Scalars['Float']>;
+  title?: Maybe<Scalars['String']>;
 }>;
 
 
@@ -188,8 +190,8 @@ export type GetBookQueryHookResult = ReturnType<typeof useGetBookQuery>;
 export type GetBookLazyQueryHookResult = ReturnType<typeof useGetBookLazyQuery>;
 export type GetBookQueryResult = Apollo.QueryResult<GetBookQuery, GetBookQueryVariables>;
 export const GetBooksDocument = gql`
-    query GetBooks($cursor: String, $limit: Float) {
-  getBooks(cursor: $cursor, limit: $limit) {
+    query GetBooks($cursor: String, $limit: Float, $title: String) {
+  getBooks(cursor: $cursor, limit: $limit, title: $title) {
     id
     title
     subtitle
@@ -215,6 +217,7 @@ export const GetBooksDocument = gql`
  *   variables: {
  *      cursor: // value for 'cursor'
  *      limit: // value for 'limit'
+ *      title: // value for 'title'
  *   },
  * });
  */

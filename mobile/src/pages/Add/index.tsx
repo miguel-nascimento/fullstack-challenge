@@ -22,10 +22,14 @@ import { Controller, useForm } from 'react-hook-form';
 import { Feather } from '@expo/vector-icons';
 import { useCreateBookMutation } from '../../generated/graphql';
 import { useNavigation } from '@react-navigation/core';
+import { ReactNativeFile } from 'apollo-upload-client';
 
 const Add: React.FC = () => {
   const [image, setImage] = useState<string | null>(null);
-  const [create] = useCreateBookMutation();
+  const [file, setFile] = useState<ReactNativeFile>();
+  const [create, { error }] = useCreateBookMutation({
+    onError: (error) => console.log(error),
+  });
   const navigation = useNavigation();
   const {
     control,
@@ -50,22 +54,26 @@ const Add: React.FC = () => {
 
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [3, 4],
       quality: 1,
     });
 
-    console.log(result);
-
     if (!result.cancelled) {
       setImage(result.uri);
+      setFile(
+        new ReactNativeFile({
+          uri: result.uri,
+          type: 'image/jpeg',
+          name: 'picture.jpeg',
+        })
+      );
     }
   };
 
   const onSubmit = (data: any) => {
-    create({ variables: data });
-    console.log(data, image);
+    create({ variables: { ...data, image: file } });
     reset();
     setImage(null);
     navigation.navigate('Home', { screen: 'Index' });

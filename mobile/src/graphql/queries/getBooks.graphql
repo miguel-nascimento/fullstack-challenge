@@ -1,5 +1,5 @@
-query GetBooks($cursor: String, $limit: Float) {
-  getBooks(cursor: $cursor, limit: $limit) {
+query GetBooks($cursor: String, $limit: Float, $title: String) {
+  getBooks(cursor: $cursor, limit: $limit, title: $title) {
     id
     title
     subtitle

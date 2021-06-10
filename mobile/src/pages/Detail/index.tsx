@@ -11,16 +11,61 @@ import {
   Description,
   TitleSubtitle,
   Back,
+  Divider,
+  Item,
+  Label,
+  Floating,
+  Content,
+  ImageSection,
 } from './styles';
 import backgroundImage from '../../assets/BackgroundDetail/detail.png';
+import { TouchableWithoutFeedback, useWindowDimensions } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Feather } from '@expo/vector-icons';
 import { useGetBookQuery } from '../../generated/graphql';
-import imageNotFound from '../../assets/ImageNotFound/imageNotFound.png';
 import { API_URL } from '../../../env';
-import Loading from '../../components/Loading';
+import { ScrollView } from 'react-native';
+import { useTheme } from 'styled-components';
+import { useNavigation } from '@react-navigation/core';
+import imageNotFound from '../../assets/ImageNotFound/imageNotFound.png';
 
 const Detail = ({ route }: any) => {
+  const theme = useTheme();
+  const navigation = useNavigation();
+  const dimensions = useWindowDimensions();
+  const FloatingBar = () => (
+    <Floating
+      style={{
+        top: dimensions.width,
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 1,
+        },
+        shadowOpacity: 0.18,
+        shadowRadius: 1.0,
+        elevation: 1,
+      }}
+    >
+      <Item>
+        <Feather name="book-open" size={24} color={theme.color.iconFloating} />
+        <Label>Read</Label>
+      </Item>
+      <Divider />
+      <Item>
+        <Feather name="headphones" size={24} color={theme.color.iconFloating} />
+        <Label>Listen</Label>
+      </Item>
+      <Divider />
+      <Item>
+        <Feather name="share" size={24} color={theme.color.iconFloating} />
+        <Label>Share</Label>
+      </Item>
+    </Floating>
+  );
+
+  const [image, setImage] = useState<any>();
+
   const [book, setBook] = useState<any>();
   const { id } = route.params;
   const { data, loading } = useGetBookQuery({
@@ -28,38 +73,48 @@ const Detail = ({ route }: any) => {
     fetchPolicy: 'network-only',
     onCompleted: () => {
       setBook(data?.getBook);
-      console.log(book);
     },
   });
 
+  useEffect(() => {
+    if (!loading && book) {
+      console.log(data?.getBook?.image);
+      setImage(
+        book.image ? { uri: `${API_URL}/static/${book.image}` } : imageNotFound
+      );
+      console.log(image);
+    }
+  }, [loading, book]);
   return (
     <Wrapper>
       <StatusBar translucent backgroundColor="transparent" />
-      {loading && <Loading />}
       {book && (
         <Container>
           <Background source={backgroundImage}>
-            <Back>
-              <Feather name="arrow-left" size={24} color="black" />
-            </Back>
-            <ImageContainer
-              style={{
-                shadowColor: 'rgba(212, 173, 134, 0.4926)',
-                shadowOffset: {
-                  width: 5,
-                  height: 5,
-                },
-                shadowOpacity: 0.4926,
-                shadowRadius: 10,
+            <Content>
+              <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
+                <Back>
+                  <Feather name="arrow-left" size={24} color="black" />
+                </Back>
+              </TouchableWithoutFeedback>
+              <ImageSection>
+                <ImageContainer
+                  style={{
+                    shadowColor: '#000',
+                    shadowOffset: {
+                      width: 0,
+                      height: 2,
+                    },
+                    shadowOpacity: 0.23,
+                    shadowRadius: 2.62,
 
-                elevation: 3,
-              }}
-            >
-              {book.image && (
-                <Image source={{ uri: `${API_URL}/static/${book.image}` }} />
-              )}
-              <Image source={imageNotFound} />
-            </ImageContainer>
+                    elevation: 4,
+                  }}
+                >
+                  <Image source={image} />
+                </ImageContainer>
+              </ImageSection>
+            </Content>
           </Background>
           <Body>
             <TitleSubtitle>
@@ -69,7 +124,10 @@ const Detail = ({ route }: any) => {
               )}
             </TitleSubtitle>
             <Author>{book.author}</Author>
-            <Description>{book.description}</Description>
+            <ScrollView>
+              <Description>{book.description}</Description>
+            </ScrollView>
+            <FloatingBar />
           </Body>
         </Container>
       )}

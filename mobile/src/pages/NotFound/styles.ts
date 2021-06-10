@@ -14,6 +14,7 @@ export const Title = styled.Text`
 `;
 
 export const Text = styled.Text`
-  font-size: 12px;
+  font-size: 18px;
+  font-weight: 600;
   color: ${({ theme }) => theme.color.text};
 `;

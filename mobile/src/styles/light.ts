@@ -10,6 +10,9 @@ const light: DefaultTheme = {
     input: '#FDFCFC',
     inputText: '#54565A',
     formText: '#000',
+    white: '#FFF',
+    iconFloating: '#CFCBD2',
+    fontFloating: '#3F4043',
   },
 };
 

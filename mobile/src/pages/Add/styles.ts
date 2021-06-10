@@ -15,7 +15,7 @@ export const AddButtonText = styled.Text`
   font-size: 24px;
   font-weight: 600;
   line-height: 28px;
-  color: #fff;
+  color: ${({ theme }) => theme.color.white};
 `;
 
 export const Button = styled(RectButton)`

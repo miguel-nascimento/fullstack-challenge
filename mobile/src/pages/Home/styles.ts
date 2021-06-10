@@ -18,7 +18,7 @@ export const Button = styled(RectButton)`
 `;
 
 export const ButtonText = styled.Text`
-  color: #fff;
+  color: ${({ theme }) => theme.color.white};
   font-weight: 600;
 `;
 

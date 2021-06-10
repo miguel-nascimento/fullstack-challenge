@@ -1,9 +1,9 @@
 overwrite: true
-schema: "http://localhost:5000/graphql"
-documents: "src/graphql/**/*.graphql"
+schema: 'https://foton-challenge-backend.herokuapp.com/graphql'
+documents: 'src/graphql/**/*.graphql'
 generates:
   src/generated/graphql.tsx:
     plugins:
-      - "typescript"
-      - "typescript-operations"
-      - "typescript-react-apollo"
+      - 'typescript'
+      - 'typescript-operations'
+      - 'typescript-react-apollo'

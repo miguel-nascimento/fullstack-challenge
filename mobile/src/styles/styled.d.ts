@@ -11,6 +11,9 @@ declare module 'styled-components' {
       input: string;
       inputText: string;
       formText: string;
+      white: string;
+      iconFloating: string;
+      fontFloating: string;
     };
   }
 }

@@ -5,7 +5,7 @@ import { Container, Title, Text } from './styles';
 const NotFound: React.FC = () => (
   <Container>
     <Title>Oops!</Title>
-    <Text>Page in construction!</Text>
+    <Text>Page in construction.</Text>
   </Container>
 );
 

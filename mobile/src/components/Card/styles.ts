@@ -1,8 +1,9 @@
 import styled from 'styled-components/native';
 
 export const Container = styled.View`
-  margin: 30px 25px 30px 20px;
+  padding: 30px 25px 30px 20px;
   flex-shrink: 1;
+  border-radius: 5px;
 `;
 
 export const Cover = styled.Image`
