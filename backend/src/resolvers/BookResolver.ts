@@ -59,7 +59,7 @@ class BookResolver {
     return new Promise((resolve, reject) =>
       stream
         .pipe(createWriteStream(filepath))
-        .on('finish', () => resolve({ path: filepath }))
+        .on('finish', () => resolve({ path: filename }))
         .on('error', reject)
     )
   }
