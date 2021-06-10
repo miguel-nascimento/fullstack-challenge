@@ -38,26 +38,29 @@ class BookResolver {
   ): Promise<boolean | undefined> {
     console.log(input.image)
     if (input.image) {
-      const hashedName = `${uuidv4()}-${input.image.name}`
-      return new Promise((resolve, reject) =>
-        input.image.file
-          .createReadStream()
-          .pipe(
-            createWriteStream(
-              path.join(__dirname, '..', '..', 'uploads', `${hashedName}`)
-            )
-          )
-          .on('finish', () => {
-            Book.create({ ...input, image: hashedName }).save()
-            resolve(true)
-          })
-          .on('error', () =>
-            reject(new Error('oops, error in image uploading'))
-          )
-      )
+      const imageUrl = await this.processUpload(input.image)
+      Book.create({ ...input, image: imageUrl }).save()
     }
     Book.create(input).save()
     return true
+  }
+
+  processUpload = async (upload) => {
+    const { stream, filename } = await upload
+    const hashedName = `${uuidv4()}-${filename}`
+    const { path } = await this.storeUpload({ stream, filename: hashedName })
+    return path
+  }
+
+  storeUpload = async ({ stream, filename }): Promise<{ path: string }> => {
+    const filepath = path.join(__dirname, '..', '..', 'uploads', `${filename}`)
+
+    return new Promise((resolve, reject) =>
+      stream
+        .pipe(createWriteStream(filename))
+        .on('finish', () => resolve({ path: filepath }))
+        .on('error', reject)
+    )
   }
 }
 
