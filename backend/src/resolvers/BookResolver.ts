@@ -22,7 +22,7 @@ class BookResolver {
       queryBuilder.where(`"createdAt" < datetime('${cursor}')`)
     }
     if (title) {
-      queryBuilder.where(`"title" like '%${title}'`)
+      queryBuilder.where(`"title" like '${title}%'`)
     }
     return queryBuilder.getMany()
   }
