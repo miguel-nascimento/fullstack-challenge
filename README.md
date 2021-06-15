@@ -51,7 +51,7 @@ $ yarn start
 
 Great! Now you only need to scam the QR Code. 😉
 
-If the list of books doesn't load at the first time, please, exit from the app and return after ~10seg.
+If the list of books doesn't load at the first time, please, exit from the app and return after ~10sec.
 Heroku API takes a time to up the "dyno" of the backend, and unfortunately i didn't take it into consideration in the development.
 Pardon.
 
